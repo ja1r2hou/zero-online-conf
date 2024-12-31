@@ -23,7 +23,7 @@ onlineConf:
 LogConf:
   ServiceName: onlineconfservice-log
   Mode: file
-  Path: ../logs/onlineconfservice/rpc
+  Path: ../logs/onlineconfservice/api
   Level: info
   Compress: false
   KeepDays: 0
