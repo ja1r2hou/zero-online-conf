@@ -3,7 +3,6 @@ package logic
 import (
 	"context"
 	"time"
-
 	"zero-online-conf/rpc/internal/svc"
 	"zero-online-conf/rpc/onlineConf"
 
@@ -25,7 +24,13 @@ func NewPingLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PingLogic {
 }
 
 func (l *PingLogic) Ping(in *onlineConf.Request) (*onlineConf.Response, error) {
-	// todo: add your logic here and delete this line
+	v, exist := l.svcCtx.Cache.Get("rpc")
+	if !exist {
+		nowTime := time.Now().String()
+		l.svcCtx.Cache.SetWithExpire("rpc", nowTime, 10*time.Second)
+		return &onlineConf.Response{Pong: nowTime}, nil
+	}
+	value, _ := v.(string)
 
-	return &onlineConf.Response{Pong: "rpc:" + time.Now().String()}, nil
+	return &onlineConf.Response{Pong: value}, nil
 }
