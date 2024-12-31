@@ -4,7 +4,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
-
 	"zero-online-conf/rpc/internal/config"
 	"zero-online-conf/rpc/internal/server"
 	"zero-online-conf/rpc/internal/svc"
@@ -24,6 +23,7 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
+	logx.MustSetup(c.LogConf)
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
@@ -33,7 +33,7 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
-	logx.MustSetup(c.LogConf)
+
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
