@@ -1,0 +1,18 @@
+Name: onlineconfservice.rpc
+ListenOn: 0.0.0.0:8080
+
+Etcd:
+  Hosts:
+  - 127.0.0.1:2379
+  Key: onlineconfservice.rpc
+
+
+
+LogConf:
+  ServiceName: onlineconfservice-log
+  Mode: file
+  Path: ../logs/onlineconfservice/rpc
+  Level: info
+  Compress: false
+  KeepDays: 0
+  StackCooldownMillis: 100

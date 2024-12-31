@@ -1,0 +1,30 @@
+Name: onlineconfservice.api
+Host: 0.0.0.0
+Port: 8888
+Timeout: 6000
+
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: onlineconfservice.api
+
+
+
+onlineConf:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: onlineconfservice.rpc
+  Timeout: 6000
+
+
+
+#日志配置
+LogConf:
+  ServiceName: onlineconfservice-log
+  Mode: file
+  Path: ../logs/onlineconfservice/rpc
+  Level: info
+  Compress: false
+  KeepDays: 0
+  StackCooldownMillis: 100

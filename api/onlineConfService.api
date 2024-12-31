@@ -1,0 +1,11 @@
+syntax = "v1"
+
+type Response {
+	Message string `json:"message"`
+}
+
+service onlineConfApi-api {
+	@handler PingHandler
+	get /ping returns (Response)
+}
+
