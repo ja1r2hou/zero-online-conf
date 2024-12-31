@@ -21,13 +21,13 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
-	logx.MustSetup(c.LogConf)
 
 	server := rest.MustNewServer(c.RestConf, rest.WithFileServer("/static", http.Dir("./static/html"))) //静态页面路径 127.0.0.1:xxxx/static/xxx.html
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
+	logx.MustSetup(c.LogConf)
 
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
