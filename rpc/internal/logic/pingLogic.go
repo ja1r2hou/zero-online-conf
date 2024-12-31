@@ -28,7 +28,7 @@ func (l *PingLogic) Ping(in *onlineConf.Request) (*onlineConf.Response, error) {
 	if !exist {
 		nowTime := time.Now().String()
 		l.svcCtx.Cache.SetWithExpire("rpc", nowTime, 10*time.Second)
-		return &onlineConf.Response{Pong: nowTime}, nil
+		return &onlineConf.Response{Pong: "no cache: " + nowTime}, nil
 	}
 	value, _ := v.(string)
 
