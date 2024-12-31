@@ -2,8 +2,8 @@ package handler
 
 import (
 	"net/http"
+	"zero-online-conf/common/respx"
 
-	"github.com/zeromicro/go-zero/rest/httpx"
 	"zero-online-conf/api/internal/logic"
 	"zero-online-conf/api/internal/svc"
 )
@@ -12,10 +12,11 @@ func PingHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		l := logic.NewPingLogic(r.Context(), svcCtx)
 		resp, err := l.Ping()
+
 		if err != nil {
-			httpx.ErrorCtx(r.Context(), w, err)
+			respx.Error(w, err, r.Context())
 		} else {
-			httpx.OkJsonCtx(r.Context(), w, resp)
+			respx.OkJson(w, resp, r.Context())
 		}
 	}
 }
