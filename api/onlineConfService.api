@@ -4,8 +4,22 @@ type Response {
 	Message string `json:"message"`
 }
 
-service onlineConfApi-api {
+type LoginReq {
+	UserName string `json:"userName"`
+	Password string `json:"password"`
+}
+
+type LoginResp {
+	UserName string `json:"userName"`
+	Token    string `json:"token"`
+}
+
+service onlineConfServiceApi {
 	@handler PingHandler
 	get /ping returns (Response)
+
+	@doc "用户登录"
+	@handler UserLoginHandler
+	post /user/v1/userLogin (LoginReq) returns (LoginResp)
 }
 

@@ -3,6 +3,16 @@
 
 package types
 
+type LoginReq struct {
+	UserName string `json:"userName"`
+	Password string `json:"password"`
+}
+
+type LoginResp struct {
+	UserName string `json:"userName"`
+	Token    string `json:"token"`
+}
+
 type Response struct {
 	Message string `json:"message"`
 }
