@@ -17,16 +17,9 @@ type RespOk struct {
 }
 
 type RespErr struct {
-	Status int `json:"status"`
-	//Errors errorx.CodeError `json:"errors"`
-	//Code int   `json:"code"` //错误码
+	Status  int    `json:"status"`
 	Msg     string `json:"msg"` //错误码对应key
 	TraceId string `json:"traceId"`
-}
-
-// Ok writes HTTP 200 OK into w.
-func Ok(w http.ResponseWriter) {
-	w.WriteHeader(http.StatusOK)
 }
 
 // OkJson writes v into w with 200 OK.
@@ -39,16 +32,6 @@ func OkJson(w http.ResponseWriter, v interface{}, ctx context.Context) {
 	output, _ := sonic.MarshalString(r)
 	logx.Info("result:                " + output + "              ")
 	WriteJson(w, http.StatusOK, r)
-}
-
-// ErrJson writes v into w with 500 OK.
-func ErrJson(w http.ResponseWriter, err error) {
-	r := &RespErr{
-		Status: 500,
-		Msg:    err.Error(),
-	}
-
-	WriteJson(w, http.StatusInternalServerError, r)
 }
 
 // Error writes err into w.
