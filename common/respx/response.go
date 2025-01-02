@@ -37,9 +37,7 @@ func OkJson(w http.ResponseWriter, v interface{}, ctx context.Context) {
 		TraceId: trace.TraceIDFromContext(ctx),
 	}
 	output, _ := sonic.MarshalString(r)
-
-	logx.Info("resp:" + output)
-
+	logx.Info("result:                " + output + "              ")
 	WriteJson(w, http.StatusOK, r)
 }
 
@@ -49,6 +47,7 @@ func ErrJson(w http.ResponseWriter, err error) {
 		Status: 500,
 		Msg:    err.Error(),
 	}
+
 	WriteJson(w, http.StatusInternalServerError, r)
 }
 
@@ -59,6 +58,8 @@ func Error(w http.ResponseWriter, err error, ctx context.Context) {
 		Msg:     err.Error(),
 		TraceId: trace.TraceIDFromContext(ctx),
 	}
+	output, _ := sonic.MarshalString(r)
+	logx.Info("result:                " + output + "              ")
 	WriteJson(w, http.StatusInternalServerError, r)
 }
 
