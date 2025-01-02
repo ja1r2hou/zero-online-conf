@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/rest/httpx"
 	"net/http"
 	"zero-online-conf/api/internal/logic"
@@ -14,8 +13,6 @@ import (
 // UserLoginHandler 用户登录
 func UserLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		ip := util.ClientIP(r)
-		logx.Infof("userLogin:ip: %v", ip)
 
 		var req types.LoginReq
 		if err := httpx.Parse(r, &req); err != nil {
@@ -24,6 +21,11 @@ func UserLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		}
 
 		l := logic.NewUserLoginLogic(r.Context(), svcCtx)
+
+		l.Logger.Info("userLogin:req:", req)
+
+		ip := util.ClientIP(r)
+		l.Logger.Info("userLogin:ip:", ip)
 
 		resp, err := l.UserLogin(&req)
 		if err != nil {

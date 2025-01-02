@@ -22,9 +22,13 @@ onlineConf:
 #日志配置
 LogConf:
   ServiceName: onlineconfservice-log
-  Mode: file
   Path: ../logs/onlineconfservice/api
+  Mode: console #file
+  Encoding: json
   Level: info
-  Compress: false
-  KeepDays: 0
-  StackCooldownMillis: 100
+  Compress: true
+  KeepDays: 7
+  StackCooldownMillis: 10000
+  Rotation: daily
+  FileTimeFormat: 2006-01-02
+  TimeFormat: 2006-01-02 15:04:05

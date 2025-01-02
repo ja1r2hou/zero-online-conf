@@ -3,6 +3,7 @@ module zero-online-conf
 go 1.23.3
 
 require (
+	github.com/bytedance/sonic v1.12.6
 	github.com/zeromicro/go-zero v1.7.4
 	google.golang.org/grpc v1.69.2
 	google.golang.org/protobuf v1.36.1
@@ -10,8 +11,11 @@ require (
 
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
+	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
+	github.com/cloudwego/base64x v0.1.4 // indirect
+	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/coreos/go-semver v0.3.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -35,6 +39,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.0.9 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -49,6 +54,7 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/redis/go-redis/v9 v9.7.0 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
+	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.15 // indirect
 	go.etcd.io/etcd/client/pkg/v3 v3.5.15 // indirect
 	go.etcd.io/etcd/client/v3 v3.5.15 // indirect
@@ -67,6 +73,7 @@ require (
 	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/multierr v1.9.0 // indirect
 	go.uber.org/zap v1.24.0 // indirect
+	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/oauth2 v0.23.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect

@@ -3,6 +3,7 @@ package respx
 import (
 	"context"
 	"encoding/json"
+	"github.com/bytedance/sonic"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/trace"
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -35,6 +36,10 @@ func OkJson(w http.ResponseWriter, v interface{}, ctx context.Context) {
 		Data:    v,
 		TraceId: trace.TraceIDFromContext(ctx),
 	}
+	output, _ := sonic.MarshalString(r)
+
+	logx.Info("resp:" + output)
+
 	WriteJson(w, http.StatusOK, r)
 }
 

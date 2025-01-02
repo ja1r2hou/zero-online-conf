@@ -23,6 +23,7 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
+	logx.MustSetup(c.LogConf)
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
@@ -32,7 +33,6 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
-	logx.MustSetup(c.LogConf)
 
 	defer s.Stop()
 
