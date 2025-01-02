@@ -27,7 +27,7 @@ func NewPingLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PingLogic {
 
 func (l *PingLogic) Ping() (*types.Response, error) {
 
-	resp, err := l.svcCtx.Onlineconf.Ping(l.ctx, &onlineconfrpc.Request{Ping: time.Now().String()})
+	resp, err := l.svcCtx.OnlineConf.Ping(l.ctx, &onlineconfrpc.Request{Ping: time.Now().String()})
 
 	response := &types.Response{resp.Pong}
 

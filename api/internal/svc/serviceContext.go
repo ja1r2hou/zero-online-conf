@@ -8,12 +8,12 @@ import (
 
 type ServiceContext struct {
 	Config     config.Config
-	Onlineconf onlineconfrpc.OnlineConfRpc
+	OnlineConf onlineconfrpc.OnlineConfRpc
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:     c,
-		Onlineconf: onlineconfrpc.NewOnlineConfRpc(zrpc.MustNewClient(c.OnlineConf)),
+		OnlineConf: onlineconfrpc.NewOnlineConfRpc(zrpc.MustNewClient(c.OnlineConf)),
 	}
 }
