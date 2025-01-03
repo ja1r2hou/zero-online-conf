@@ -1,5 +1,11 @@
 syntax = "v1"
 
+//Header 请求头
+type Header {
+	AccessToken string `header:"access-token,optional"` // Access Token
+	Uid         string `header:"uid,optional"` // Uid
+}
+
 type Response {
 	Message string `json:"message"`
 }
@@ -22,5 +28,16 @@ service onlineConfServiceApi {
 	@doc "用户登录"
 	@handler UserLoginHandler
 	post /user/v1/userLogin (LoginReq) returns (LoginResp)
+}
+
+@server (
+	middleware: Auth
+)
+service onlineConfServiceApi {
+	@doc "ListHandler 展示所有配置的列表"
+	@handler ListHandler
+	get /list returns (Response)
+
+
 }
 

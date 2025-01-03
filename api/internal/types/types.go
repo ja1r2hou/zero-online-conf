@@ -3,6 +3,11 @@
 
 package types
 
+type Header struct {
+	AccessToken string `header:"access-token,optional"` // Access Token
+	Uid         string `header:"uid,optional"`          // Uid
+}
+
 type LoginReq struct {
 	UserName string `json:"userName"`
 	Password string `json:"password"`

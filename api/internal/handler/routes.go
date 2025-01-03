@@ -27,4 +27,18 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// ListHandler 展示所有配置的列表
+					Method:  http.MethodGet,
+					Path:    "/list",
+					Handler: ListHandler(serverCtx),
+				},
+			}...,
+		),
+	)
 }
