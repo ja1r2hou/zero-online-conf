@@ -15,16 +15,16 @@ func GetServiceListHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req types.GetServiceListReq
 		if err := httpx.Parse(r, &req); err != nil {
-			respx.Error(w, err, r.Context())
+			respx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
 		l := logic.NewGetServiceListLogic(r.Context(), svcCtx)
 		resp, err := l.GetServiceList(&req)
 		if err != nil {
-			respx.Error(w, err, r.Context())
+			respx.ErrorCtx(r.Context(), w, err)
 		} else {
-			respx.OkJson(w, resp, r.Context())
+			respx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

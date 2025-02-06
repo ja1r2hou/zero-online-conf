@@ -16,7 +16,7 @@ func UserLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		var req types.LoginReq
 		if err := httpx.Parse(r, &req); err != nil {
-			respx.Error(w, err, r.Context())
+			respx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
@@ -29,9 +29,9 @@ func UserLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		resp, err := l.UserLogin(&req)
 		if err != nil {
-			respx.Error(w, err, r.Context())
+			respx.ErrorCtx(r.Context(), w, err)
 		} else {
-			respx.OkJson(w, resp, r.Context())
+			respx.OkJsonCtx(r.Context(), w, resp)
 		}
 	}
 }

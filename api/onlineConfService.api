@@ -58,5 +58,8 @@ service onlineConfServiceApi {
 	@doc "获取服务注册列表"
     @handler GetServiceList
     post /v1/getServiceList (GetServiceListReq) returns (GetServiceListResp)
+
+
+
 }
 

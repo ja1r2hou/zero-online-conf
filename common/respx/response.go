@@ -22,10 +22,10 @@ type RespErr struct {
 	TraceId string `json:"traceId"`
 }
 
-// OkJson writes v into w with 200 OK.
-func OkJson(w http.ResponseWriter, v interface{}, ctx context.Context) {
+// OkJsonCtx writes v into w with 200 OK.
+func OkJsonCtx(ctx context.Context, w http.ResponseWriter, v interface{}) {
 	r := &RespOk{
-		Status:  0,
+		Status:  200,
 		Data:    v,
 		TraceId: trace.TraceIDFromContext(ctx),
 	}
@@ -34,8 +34,8 @@ func OkJson(w http.ResponseWriter, v interface{}, ctx context.Context) {
 	WriteJson(w, http.StatusOK, r)
 }
 
-// Error writes err into w.
-func Error(w http.ResponseWriter, err error, ctx context.Context) {
+// ErrorCtx writes err into w.
+func ErrorCtx(ctx context.Context, w http.ResponseWriter, err error) {
 	r := &RespErr{
 		Status:  500,
 		Msg:     err.Error(),
