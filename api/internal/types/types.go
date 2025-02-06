@@ -3,6 +3,19 @@
 
 package types
 
+type GetServiceListArrays struct {
+	ServiceName string `json:"serviceName"`
+	IpAddr      string `json:"ipAddr"`
+}
+
+type GetServiceListReq struct {
+	ServiceName []string `json:"serviceName"`
+}
+
+type GetServiceListResp struct {
+	GetServiceListArrays []*GetServiceListArrays `json:"getServiceListArrays"`
+}
+
 type Header struct {
 	AccessToken string `header:"access-token,optional"` // Access Token
 	Uid         string `header:"uid,optional"`          // Uid

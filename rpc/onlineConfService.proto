@@ -11,6 +11,27 @@ message Response {
   string pong = 1;
 }
 
+//GetServiceList 获取etcd注册的所有服务入参
+message GetServiceListReq{
+  repeated string service_name = 1;//服务名
+
+}
+
+message GetServiceListArrays {
+  string serviceName =1;//活跃的服务名
+  string ipAddr = 2; //活跃的ip和端口
+  int32 count = 3; //活跃机器
+
+}
+
+//GetServiceList 获取etcd注册的所有服务出参
+message GetServiceListResp{
+  repeated GetServiceListArrays get_service_list_arrays = 1;
+}
+
 service OnlineConfRpc {
   rpc Ping(Request) returns(Response);
+
+  //GetServiceList 获取etcd注册的所有服务
+  rpc GetServiceList(GetServiceListReq) returns(GetServiceListResp);
 }

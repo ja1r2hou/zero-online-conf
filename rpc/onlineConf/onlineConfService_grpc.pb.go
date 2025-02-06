@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	OnlineConfRpc_Ping_FullMethodName = "/onlineConfrpc.OnlineConfRpc/Ping"
+	OnlineConfRpc_Ping_FullMethodName           = "/onlineConfrpc.OnlineConfRpc/Ping"
+	OnlineConfRpc_GetServiceList_FullMethodName = "/onlineConfrpc.OnlineConfRpc/GetServiceList"
 )
 
 // OnlineConfRpcClient is the client API for OnlineConfRpc service.
@@ -27,6 +28,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OnlineConfRpcClient interface {
 	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	// GetServiceList 获取etcd注册的所有服务
+	GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error)
 }
 
 type onlineConfRpcClient struct {
@@ -47,11 +50,23 @@ func (c *onlineConfRpcClient) Ping(ctx context.Context, in *Request, opts ...grp
 	return out, nil
 }
 
+func (c *onlineConfRpcClient) GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetServiceListResp)
+	err := c.cc.Invoke(ctx, OnlineConfRpc_GetServiceList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OnlineConfRpcServer is the server API for OnlineConfRpc service.
 // All implementations must embed UnimplementedOnlineConfRpcServer
 // for forward compatibility.
 type OnlineConfRpcServer interface {
 	Ping(context.Context, *Request) (*Response, error)
+	// GetServiceList 获取etcd注册的所有服务
+	GetServiceList(context.Context, *GetServiceListReq) (*GetServiceListResp, error)
 	mustEmbedUnimplementedOnlineConfRpcServer()
 }
 
@@ -64,6 +79,9 @@ type UnimplementedOnlineConfRpcServer struct{}
 
 func (UnimplementedOnlineConfRpcServer) Ping(context.Context, *Request) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedOnlineConfRpcServer) GetServiceList(context.Context, *GetServiceListReq) (*GetServiceListResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetServiceList not implemented")
 }
 func (UnimplementedOnlineConfRpcServer) mustEmbedUnimplementedOnlineConfRpcServer() {}
 func (UnimplementedOnlineConfRpcServer) testEmbeddedByValue()                       {}
@@ -104,6 +122,24 @@ func _OnlineConfRpc_Ping_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OnlineConfRpc_GetServiceList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetServiceListReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OnlineConfRpcServer).GetServiceList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OnlineConfRpc_GetServiceList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OnlineConfRpcServer).GetServiceList(ctx, req.(*GetServiceListReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OnlineConfRpc_ServiceDesc is the grpc.ServiceDesc for OnlineConfRpc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +150,10 @@ var OnlineConfRpc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _OnlineConfRpc_Ping_Handler,
+		},
+		{
+			MethodName: "GetServiceList",
+			Handler:    _OnlineConfRpc_GetServiceList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

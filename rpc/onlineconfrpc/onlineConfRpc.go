@@ -14,11 +14,16 @@ import (
 )
 
 type (
-	Request  = onlineConf.Request
-	Response = onlineConf.Response
+	GetServiceListArrays = onlineConf.GetServiceListArrays
+	GetServiceListReq    = onlineConf.GetServiceListReq
+	GetServiceListResp   = onlineConf.GetServiceListResp
+	Request              = onlineConf.Request
+	Response             = onlineConf.Response
 
 	OnlineConfRpc interface {
 		Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+		// GetServiceList 获取etcd注册的所有服务
+		GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error)
 	}
 
 	defaultOnlineConfRpc struct {
@@ -35,4 +40,10 @@ func NewOnlineConfRpc(cli zrpc.Client) OnlineConfRpc {
 func (m *defaultOnlineConfRpc) Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	client := onlineConf.NewOnlineConfRpcClient(m.cli.Conn())
 	return client.Ping(ctx, in, opts...)
+}
+
+// GetServiceList 获取etcd注册的所有服务
+func (m *defaultOnlineConfRpc) GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error) {
+	client := onlineConf.NewOnlineConfRpcClient(m.cli.Conn())
+	return client.GetServiceList(ctx, in, opts...)
 }

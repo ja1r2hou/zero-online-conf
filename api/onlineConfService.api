@@ -21,6 +21,19 @@ type LoginResp {
 	Token    string `json:"token"`
 }
 
+type GetServiceListReq {
+	ServiceName []string `json:"serviceName"`
+}
+
+type GetServiceListArrays {
+	ServiceName string `json:"serviceName"`
+	IpAddr      string `json:"ipAddr"`
+}
+
+type GetServiceListResp {
+	GetServiceListArrays []*GetServiceListArrays `json:"getServiceListArrays"`
+}
+
 service onlineConfServiceApi {
 	@handler PingHandler
 	get /ping returns (Response)
@@ -28,16 +41,22 @@ service onlineConfServiceApi {
 	@doc "用户登录"
 	@handler UserLoginHandler
 	post /user/v1/userLogin (LoginReq) returns (LoginResp)
+
+
 }
 
 @server (
 	middleware: Auth
 )
+
 service onlineConfServiceApi {
 	@doc "ListHandler 展示所有配置的列表"
 	@handler ListHandler
 	get /list returns (Response)
 
 
+	@doc "获取服务注册列表"
+    @handler GetServiceList
+    post /v1/getServiceList (GetServiceListReq) returns (GetServiceListResp)
 }
 

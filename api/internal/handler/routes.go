@@ -38,6 +38,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 					Path:    "/list",
 					Handler: ListHandler(serverCtx),
 				},
+				{
+					// 获取服务注册列表
+					Method:  http.MethodPost,
+					Path:    "/v1/getServiceList",
+					Handler: GetServiceListHandler(serverCtx),
+				},
 			}...,
 		),
 	)

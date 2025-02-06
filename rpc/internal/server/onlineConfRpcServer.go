@@ -27,3 +27,9 @@ func (s *OnlineConfRpcServer) Ping(ctx context.Context, in *onlineConf.Request) 
 	l := logic.NewPingLogic(ctx, s.svcCtx)
 	return l.Ping(in)
 }
+
+// GetServiceList 获取etcd注册的所有服务
+func (s *OnlineConfRpcServer) GetServiceList(ctx context.Context, in *onlineConf.GetServiceListReq) (*onlineConf.GetServiceListResp, error) {
+	l := logic.NewGetServiceListLogic(ctx, s.svcCtx)
+	return l.GetServiceList(in)
+}
