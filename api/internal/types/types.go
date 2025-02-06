@@ -6,6 +6,7 @@ package types
 type GetServiceListArrays struct {
 	ServiceName string `json:"serviceName"`
 	IpAddr      string `json:"ipAddr"`
+	Count       int64  `json:"count"`
 }
 
 type GetServiceListReq struct {

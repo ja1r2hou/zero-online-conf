@@ -25,12 +25,23 @@ func NewGetServiceListLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ge
 	}
 }
 
-func (l *GetServiceListLogic) GetServiceList(req *types.GetServiceListReq) (interface{}, error) {
+func (l *GetServiceListLogic) GetServiceList(req *types.GetServiceListReq) (*types.GetServiceListResp, error) {
 	getServiceList, err := l.svcCtx.OnlineConf.GetServiceList(l.ctx, &onlineConf.GetServiceListReq{ServiceName: req.ServiceName})
 
 	if err != nil {
 		return nil, err
 	}
+	arrays := make([]*types.GetServiceListArrays, 0)
+	for i := 0; i < len(getServiceList.GetServiceListArrays); i++ {
+		getServiceListArray := getServiceList.GetServiceListArrays[i]
 
-	return getServiceList.GetServiceListArrays, nil
+		arrays = append(arrays, &types.GetServiceListArrays{
+			ServiceName: getServiceListArray.ServiceName,
+			IpAddr:      getServiceListArray.IpAddr,
+			Count:       int64(getServiceListArray.Count),
+		})
+
+	}
+
+	return &types.GetServiceListResp{GetServiceListArrays: arrays}, nil
 }

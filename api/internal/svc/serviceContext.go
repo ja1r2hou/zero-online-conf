@@ -10,9 +10,10 @@ import (
 type ServiceContext struct {
 	Config     config.Config
 	OnlineConf onlineconfrpc.OnlineConfRpc
+	//Auth       rest.Middleware
 }
 
-func (c *ServiceContext) Auth(next http.HandlerFunc) http.HandlerFunc {
+func (m *ServiceContext) Auth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// TODO generate middleware implement function, delete after code implementation
 
@@ -20,7 +21,6 @@ func (c *ServiceContext) Auth(next http.HandlerFunc) http.HandlerFunc {
 		next(w, r)
 	}
 }
-
 func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:     c,
