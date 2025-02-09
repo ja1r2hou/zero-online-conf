@@ -6,7 +6,16 @@ Etcd:
   - 127.0.0.1:2379
   Key: onlineconfservice.rpc
 
+#权限配置
+AuthToken:
+  AccessSecret: gatewayef3b93820453f24894430968bb79a48
+  AccessExpire: 100
 
+MySql:
+  DataSource: "root:root123123@tcp(127.0.0.1:3306)/zero-online-conf?charset=utf8mb4"
+  MaxCon:      100
+  MaxIdle:     100
+  MaxLifeTime: 3600
 
 LogConf:
   ServiceName: onlineconfservice-log
