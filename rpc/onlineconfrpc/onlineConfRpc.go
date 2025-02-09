@@ -19,11 +19,19 @@ type (
 	GetServiceListResp   = onlineConf.GetServiceListResp
 	Request              = onlineConf.Request
 	Response             = onlineConf.Response
+	UserAuthReq          = onlineConf.UserAuthReq
+	UserAuthResp         = onlineConf.UserAuthResp
+	UserLoginReq         = onlineConf.UserLoginReq
+	UserLoginResp        = onlineConf.UserLoginResp
 
 	OnlineConfRpc interface {
 		Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 		// GetServiceList 获取etcd注册的所有服务
 		GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error)
+		// UserLogin 登录
+		UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
+		// UserAuth 验证用户token
+		UserAuth(ctx context.Context, in *UserAuthReq, opts ...grpc.CallOption) (*UserAuthResp, error)
 	}
 
 	defaultOnlineConfRpc struct {
@@ -46,4 +54,16 @@ func (m *defaultOnlineConfRpc) Ping(ctx context.Context, in *Request, opts ...gr
 func (m *defaultOnlineConfRpc) GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error) {
 	client := onlineConf.NewOnlineConfRpcClient(m.cli.Conn())
 	return client.GetServiceList(ctx, in, opts...)
+}
+
+// UserLogin 登录
+func (m *defaultOnlineConfRpc) UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
+	client := onlineConf.NewOnlineConfRpcClient(m.cli.Conn())
+	return client.UserLogin(ctx, in, opts...)
+}
+
+// UserAuth 验证用户token
+func (m *defaultOnlineConfRpc) UserAuth(ctx context.Context, in *UserAuthReq, opts ...grpc.CallOption) (*UserAuthResp, error) {
+	client := onlineConf.NewOnlineConfRpcClient(m.cli.Conn())
+	return client.UserAuth(ctx, in, opts...)
 }

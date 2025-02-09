@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	OnlineConfRpc_Ping_FullMethodName           = "/onlineConfrpc.OnlineConfRpc/Ping"
 	OnlineConfRpc_GetServiceList_FullMethodName = "/onlineConfrpc.OnlineConfRpc/GetServiceList"
+	OnlineConfRpc_UserLogin_FullMethodName      = "/onlineConfrpc.OnlineConfRpc/UserLogin"
+	OnlineConfRpc_UserAuth_FullMethodName       = "/onlineConfrpc.OnlineConfRpc/UserAuth"
 )
 
 // OnlineConfRpcClient is the client API for OnlineConfRpc service.
@@ -30,6 +32,10 @@ type OnlineConfRpcClient interface {
 	Ping(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 	// GetServiceList 获取etcd注册的所有服务
 	GetServiceList(ctx context.Context, in *GetServiceListReq, opts ...grpc.CallOption) (*GetServiceListResp, error)
+	// UserLogin 登录
+	UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error)
+	// UserAuth 验证用户token
+	UserAuth(ctx context.Context, in *UserAuthReq, opts ...grpc.CallOption) (*UserAuthResp, error)
 }
 
 type onlineConfRpcClient struct {
@@ -60,6 +66,26 @@ func (c *onlineConfRpcClient) GetServiceList(ctx context.Context, in *GetService
 	return out, nil
 }
 
+func (c *onlineConfRpcClient) UserLogin(ctx context.Context, in *UserLoginReq, opts ...grpc.CallOption) (*UserLoginResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserLoginResp)
+	err := c.cc.Invoke(ctx, OnlineConfRpc_UserLogin_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *onlineConfRpcClient) UserAuth(ctx context.Context, in *UserAuthReq, opts ...grpc.CallOption) (*UserAuthResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UserAuthResp)
+	err := c.cc.Invoke(ctx, OnlineConfRpc_UserAuth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // OnlineConfRpcServer is the server API for OnlineConfRpc service.
 // All implementations must embed UnimplementedOnlineConfRpcServer
 // for forward compatibility.
@@ -67,6 +93,10 @@ type OnlineConfRpcServer interface {
 	Ping(context.Context, *Request) (*Response, error)
 	// GetServiceList 获取etcd注册的所有服务
 	GetServiceList(context.Context, *GetServiceListReq) (*GetServiceListResp, error)
+	// UserLogin 登录
+	UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error)
+	// UserAuth 验证用户token
+	UserAuth(context.Context, *UserAuthReq) (*UserAuthResp, error)
 	mustEmbedUnimplementedOnlineConfRpcServer()
 }
 
@@ -82,6 +112,12 @@ func (UnimplementedOnlineConfRpcServer) Ping(context.Context, *Request) (*Respon
 }
 func (UnimplementedOnlineConfRpcServer) GetServiceList(context.Context, *GetServiceListReq) (*GetServiceListResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetServiceList not implemented")
+}
+func (UnimplementedOnlineConfRpcServer) UserLogin(context.Context, *UserLoginReq) (*UserLoginResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserLogin not implemented")
+}
+func (UnimplementedOnlineConfRpcServer) UserAuth(context.Context, *UserAuthReq) (*UserAuthResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UserAuth not implemented")
 }
 func (UnimplementedOnlineConfRpcServer) mustEmbedUnimplementedOnlineConfRpcServer() {}
 func (UnimplementedOnlineConfRpcServer) testEmbeddedByValue()                       {}
@@ -140,6 +176,42 @@ func _OnlineConfRpc_GetServiceList_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _OnlineConfRpc_UserLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserLoginReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OnlineConfRpcServer).UserLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OnlineConfRpc_UserLogin_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OnlineConfRpcServer).UserLogin(ctx, req.(*UserLoginReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OnlineConfRpc_UserAuth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserAuthReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OnlineConfRpcServer).UserAuth(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: OnlineConfRpc_UserAuth_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OnlineConfRpcServer).UserAuth(ctx, req.(*UserAuthReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // OnlineConfRpc_ServiceDesc is the grpc.ServiceDesc for OnlineConfRpc service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -154,6 +226,14 @@ var OnlineConfRpc_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetServiceList",
 			Handler:    _OnlineConfRpc_GetServiceList_Handler,
+		},
+		{
+			MethodName: "UserLogin",
+			Handler:    _OnlineConfRpc_UserLogin_Handler,
+		},
+		{
+			MethodName: "UserAuth",
+			Handler:    _OnlineConfRpc_UserAuth_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

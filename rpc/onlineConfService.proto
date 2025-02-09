@@ -29,9 +29,41 @@ message GetServiceListResp{
   repeated GetServiceListArrays get_service_list_arrays = 1;
 }
 
+//UserLoginReq UserLogin 登录的入参
+message UserLoginReq{
+  string userName = 1;
+  string password = 2;
+  string ip = 3;
+}
+
+//UserLoginResp UserLogin 登录的出参
+message UserLoginResp{
+  string token = 1;
+  string userName = 2;
+
+}
+
+
+//UserAuthReq UserAuth 验证用户的token入参
+message UserAuthReq{
+  string token = 1;
+  string userName = 2;
+}
+
+//UserAuthResp UserAuth 验证用户的token入参
+message UserAuthResp{
+  bool is_suc =1;//是否该token为uid
+}
+
 service OnlineConfRpc {
   rpc Ping(Request) returns(Response);
 
   //GetServiceList 获取etcd注册的所有服务
   rpc GetServiceList(GetServiceListReq) returns(GetServiceListResp);
+
+  //UserLogin 登录
+  rpc UserLogin(UserLoginReq)returns(UserLoginResp);
+
+  //UserAuth 验证用户token
+  rpc UserAuth(UserAuthReq)returns(UserAuthResp);
 }

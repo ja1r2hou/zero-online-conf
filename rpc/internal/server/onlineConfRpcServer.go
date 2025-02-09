@@ -33,3 +33,15 @@ func (s *OnlineConfRpcServer) GetServiceList(ctx context.Context, in *onlineConf
 	l := logic.NewGetServiceListLogic(ctx, s.svcCtx)
 	return l.GetServiceList(in)
 }
+
+// UserLogin 登录
+func (s *OnlineConfRpcServer) UserLogin(ctx context.Context, in *onlineConf.UserLoginReq) (*onlineConf.UserLoginResp, error) {
+	l := logic.NewUserLoginLogic(ctx, s.svcCtx)
+	return l.UserLogin(in)
+}
+
+// UserAuth 验证用户token
+func (s *OnlineConfRpcServer) UserAuth(ctx context.Context, in *onlineConf.UserAuthReq) (*onlineConf.UserAuthResp, error) {
+	l := logic.NewUserAuthLogic(ctx, s.svcCtx)
+	return l.UserAuth(in)
+}
