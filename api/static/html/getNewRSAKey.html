@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RSA Demo</title>
+    <style>
+        /* 内嵌 Bootstrap CSS */
+        body {
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+        }
+        /* 其他自定义样式 */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>RSA 密钥对</h1>
+    <h1>请手动保存到代码里，将用于加密解密</h1>
+    <div class="mb-3">
+        <label for="publicKey" class="form-label">公钥</label>
+        <textarea class="form-control" id="publicKey" readonly></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="privateKey" class="form-label">私钥</label>
+        <textarea class="form-control" id="privateKey" readonly></textarea>
+    </div>
+</div>
+
+<script>
+    // 内嵌 Bootstrap JS (如果需要使用 Bootstrap 的 JS 组件)
+    // ...
+
+    fetch('/generateRSAKey')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('publicKey').value = data.publicKey;
+            document.getElementById('privateKey').value = data.privateKey;
+
+        });
+</script>
+</body>
+</html>

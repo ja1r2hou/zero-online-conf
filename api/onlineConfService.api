@@ -35,9 +35,18 @@ type GetServiceListResp {
 	GetServiceListArrays []*GetServiceListArrays `json:"getServiceListArrays"`
 }
 
+type GenerateRSAKeyResp {
+	PublicKey  string `json:"publicKey"`
+	PrivateKey string `json:"privateKey"`
+}
+
 service onlineConfServiceApi {
 	@handler PingHandler
 	get /ping returns (Response)
+
+	@doc "获取新的公钥和私钥"
+	@handler GenerateRSAKey
+	get /generateRSAKey returns (GenerateRSAKeyResp)
 
 	@doc "用户登录"
 	@handler UserLoginHandler

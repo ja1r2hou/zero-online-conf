@@ -15,6 +15,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				// 获取新的公钥和私钥
+				Method:  http.MethodGet,
+				Path:    "/generateRSAKey",
+				Handler: GenerateRSAKeyHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodGet,
 				Path:    "/ping",
 				Handler: PingHandler(serverCtx),

@@ -3,6 +3,11 @@
 
 package types
 
+type GenerateRSAKeyResp struct {
+	PublicKey  string `json:"publicKey"`
+	PrivateKey string `json:"privateKey"`
+}
+
 type GetServiceListArrays struct {
 	ServiceName string `json:"serviceName"`
 	IpAddr      string `json:"ipAddr"`
