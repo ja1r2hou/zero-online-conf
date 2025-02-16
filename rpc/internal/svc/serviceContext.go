@@ -15,13 +15,16 @@ type ServiceContext struct {
 
 var UserMap map[string]string
 
-// UserSalt 用户登录salt 最好修改一下
-const UserSalt = "mm9icik5kk7dkd0odos134558dfhnsdqqd"
+const (
+	UserSalt = "mm9icik5kk7dkd0odos134558dfhnsdqqd" //用户登录salt 最好修改一下
+	UserPwd  = "admin123"                           //登录密码  需要修改
+	LookPwd  = "admin"                              //查看配置内容的时候需要用到
+)
 
 func init() {
 
 	UserMap = make(map[string]string, 0)
-	UserMap["admin"] = util.Md5encoded("admin", UserSalt) //默认用户和密码
+	UserMap["admin"] = util.Md5encoded(UserPwd, UserSalt) //默认用户和密码
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -29,9 +32,15 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	if err != nil {
 		panic("系统加载错误:缓存初始化失败！")
 	}
-	if UserMap["admin"] == "f244c91210dd383c94ed7abccb08a9f4" || UserMap["admin"] == "ea26857feaf048a7606b22f7cdc57625" {
+	//检测是否修改初始密码
+	if UserPwd == "admin" || UserPwd == "admin123" {
 		fmt.Println("系统加载错误:需要修改初始密码！")
 		panic("系统加载错误:需要修改初始密码！")
+	}
+	//检查初始查看密码是否有修改
+	if LookPwd == "admin" || LookPwd == "admin123" {
+		fmt.Println("系统加载错误:需要修改初始查看密码！")
+		panic("系统加载错误:需要修改初始查看密码！")
 	}
 
 	return &ServiceContext{
