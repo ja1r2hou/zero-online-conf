@@ -21,9 +21,7 @@ func NewUserSvc(ctx context.Context, svcCtx *ServiceContext) *UserSvc {
 }
 
 func (u *UserSvc) UserLogin(req *onlineConf.UserLoginReq) (string, error) {
-
-	db := u.svcCtx.DB
-	db.Raw("")
+	//pwd := UserMap[req.UserName]
 
 	return "", nil
 }

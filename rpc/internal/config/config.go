@@ -7,13 +7,7 @@ import (
 
 type Config struct {
 	zrpc.RpcServerConf
-	LogConf logx.LogConf
-	MySql   struct {
-		DataSource  string
-		MaxCon      int
-		MaxIdle     int
-		MaxLifeTime int64
-	}
+	LogConf   logx.LogConf
 	AuthToken struct {
 		AccessSecret string
 		AccessExpire int64

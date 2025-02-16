@@ -1,17 +1,27 @@
 package svc
 
 import (
+	"fmt"
 	"github.com/zeromicro/go-zero/core/collection"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
 	"time"
+	"zero-online-conf/common/util"
 	"zero-online-conf/rpc/internal/config"
 )
 
 type ServiceContext struct {
 	Config config.Config
 	Cache  *collection.Cache
-	DB     *gorm.DB
+}
+
+var UserMap map[string]string
+
+// UserSalt 用户登录salt 最好修改一下
+const UserSalt = "mm9icik5kk7dkd0odos134558dfhnsdqqd"
+
+func init() {
+
+	UserMap = make(map[string]string, 0)
+	UserMap["admin"] = util.Md5encoded("admin", UserSalt) //默认用户和密码
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -19,22 +29,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	if err != nil {
 		panic("系统加载错误:缓存初始化失败！")
 	}
-
-	db, err := gorm.Open(mysql.Open(c.MySql.DataSource), &gorm.Config{})
-	if err != nil {
-		panic(err)
+	if UserMap["admin"] == "f244c91210dd383c94ed7abccb08a9f4" || UserMap["admin"] == "ea26857feaf048a7606b22f7cdc57625" {
+		fmt.Println("系统加载错误:需要修改初始密码！")
+		panic("系统加载错误:需要修改初始密码！")
 	}
-	sqlDb, err := db.DB()
-	if err != nil {
-		panic(err)
-	}
-	sqlDb.SetMaxIdleConns(c.MySql.MaxIdle)
-	sqlDb.SetMaxOpenConns(c.MySql.MaxCon)
-	sqlDb.SetConnMaxLifetime(time.Duration(c.MySql.MaxLifeTime))
 
 	return &ServiceContext{
 		Config: c,
 		Cache:  cache,
-		DB:     db,
 	}
 }
