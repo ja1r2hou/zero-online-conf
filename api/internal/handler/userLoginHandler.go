@@ -27,7 +27,7 @@ func UserLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 		ip := util.ClientIP(r)
 		l.Logger.Info("userLogin:ip:", ip)
 
-		resp, err := l.UserLogin(&req)
+		resp, err := l.UserLogin(&req, ip)
 		if err != nil {
 			respx.ErrorCtx(r.Context(), w, err)
 		} else {

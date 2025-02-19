@@ -2,11 +2,10 @@ package logic
 
 import (
 	"context"
-
+	"github.com/zeromicro/go-zero/core/logx"
 	"zero-online-conf/api/internal/svc"
 	"zero-online-conf/api/internal/types"
-
-	"github.com/zeromicro/go-zero/core/logx"
+	"zero-online-conf/rpc/onlineconfrpc"
 )
 
 type UserLoginLogic struct {
@@ -15,7 +14,7 @@ type UserLoginLogic struct {
 	svcCtx *svc.ServiceContext
 }
 
-// 用户登录
+// NewUserLoginLogic 用户登录
 func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLoginLogic {
 	return &UserLoginLogic{
 		Logger: logx.WithContext(ctx),
@@ -24,8 +23,21 @@ func NewUserLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLog
 	}
 }
 
-func (l *UserLoginLogic) UserLogin(req *types.LoginReq) (resp *types.LoginResp, err error) {
-	// todo: add your logic here and delete this line
+func (l *UserLoginLogic) UserLogin(req *types.LoginReq, ip string) (*types.LoginResp, error) {
+	loginReq := &onlineconfrpc.UserLoginReq{
+		UserName: req.UserName,
+		Password: req.Password,
+		Ip:       ip,
+	}
+	loginResp, err := l.svcCtx.OnlineConf.UserLogin(l.ctx, loginReq)
+	if err != nil {
+		return nil, err
+	}
+	resp := &types.LoginResp{
+		UserName: loginResp.UserName,
+		//UserId:   loginResp,
+		Token: loginResp.Token,
+	}
 
-	return
+	return resp, nil
 }

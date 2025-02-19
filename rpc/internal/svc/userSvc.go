@@ -47,7 +47,7 @@ func (u *UserSvc) UserLogin(req *onlineConf.UserLoginReq) (string, error) {
 		return "", errors.New("用户不存在！")
 	}
 
-	verify := util.Md5Verify(pwd, UserSalt, req.Password)
+	verify := util.Md5Verify(req.Password, UserSalt, pwd)
 	if !verify {
 		u.Logger.Error("UserSvc:UserLogin:用户名或密码错误！")
 		return "", errors.New("登录错误！")
@@ -87,6 +87,5 @@ func (u *UserSvc) VerifyUserToken(req *onlineConf.UserAuthReq) (bool, error) {
 		u.Logger.Error("userSvc:VerifyUserToken:RsaDecrypt:登录的用户与密文不符合或是过期时间已经大于现在！")
 		return false, err
 	}
-
 	return true, nil
 }

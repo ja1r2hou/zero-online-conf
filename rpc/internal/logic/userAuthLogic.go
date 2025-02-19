@@ -13,13 +13,15 @@ type UserAuthLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 	logx.Logger
+	userSvc *svc.UserSvc
 }
 
 func NewUserAuthLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserAuthLogic {
 	return &UserAuthLogic{
-		ctx:    ctx,
-		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
+		ctx:     ctx,
+		svcCtx:  svcCtx,
+		Logger:  logx.WithContext(ctx),
+		userSvc: svc.NewUserSvc(ctx, svcCtx),
 	}
 }
 
