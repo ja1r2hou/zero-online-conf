@@ -2,8 +2,8 @@ package svc
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
 	"time"
 	"zero-online-conf/common/util"
@@ -17,6 +17,16 @@ type UserSvc struct {
 	svcCtx *ServiceContext
 }
 
+// TokenPrivatKey  用来处理 用户登录的token的解密
+var TokenPrivatKey = ""
+
+// TokenPublicKey 用来处理 用户登录的token的加密
+var TokenPublicKey = ""
+
+func init() {
+	TokenPrivatKey, TokenPublicKey, _ = util.GenerateRSAKey(2048)
+}
+
 func NewUserSvc(ctx context.Context, svcCtx *ServiceContext) *UserSvc {
 	return &UserSvc{
 		ctx:    ctx,
@@ -25,6 +35,7 @@ func NewUserSvc(ctx context.Context, svcCtx *ServiceContext) *UserSvc {
 	}
 }
 
+// UserLogin 用户登录Svc
 func (u *UserSvc) UserLogin(req *onlineConf.UserLoginReq) (string, error) {
 	if req.UserName == "lookPwd" {
 		u.Logger.Error("UserSvc:UserLogin:用户不存在")
@@ -48,10 +59,34 @@ func (u *UserSvc) UserLogin(req *onlineConf.UserLoginReq) (string, error) {
 		Ip:                  req.Ip,
 		UserTokenExpireTime: tokenExpireTime,
 	}
-	fmt.Println(userToken)
-	return "", nil
+	tokenJson, _ := json.Marshal(userToken)
+	encrypt, err := util.RsaEncrypt(string(tokenJson), TokenPublicKey)
+	if err != nil {
+		return "", err
+	}
+
+	return encrypt, nil
 }
 
-func (u *UserSvc) VerifyUserToken() {
+// VerifyUserToken 验证用户token
+func (u *UserSvc) VerifyUserToken(req *onlineConf.UserAuthReq) (bool, error) {
+	//解密token
+	decrypt, err := util.RsaDecrypt(req.Token, TokenPrivatKey)
+	if err != nil {
+		u.Logger.Error("userSvc:VerifyUserToken:RsaDecrypt:解密失败！")
+		return false, err
+	}
+	userToken := model.UserToken{}
+	err = json.Unmarshal([]byte(decrypt), &userToken)
+	if err != nil {
+		u.Logger.Error("userSvc:VerifyUserToken:RsaDecrypt:解析json失败！")
+		return false, err
+	}
+	// 判断当前用户 是否和密文一致 如果有一项与密文不一致 就判断是非正常用户
+	if userToken.UserName != req.UserName || userToken.Ip != req.Ip || time.Now().Unix() > userToken.UserTokenExpireTime.Unix() {
+		u.Logger.Error("userSvc:VerifyUserToken:RsaDecrypt:登录的用户与密文不符合或是过期时间已经大于现在！")
+		return false, err
+	}
 
+	return true, nil
 }

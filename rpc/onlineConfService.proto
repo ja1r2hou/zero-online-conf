@@ -48,6 +48,7 @@ message UserLoginResp{
 message UserAuthReq{
   string token = 1;
   string userName = 2;
+  string ip = 3;
 }
 
 //UserAuthResp UserAuth 验证用户的token入参
@@ -58,12 +59,12 @@ message UserAuthResp{
 service OnlineConfRpc {
   rpc Ping(Request) returns(Response);
 
-  //GetServiceList 获取etcd注册的所有服务
+  //GetServiceList 获取etcd注册的所有服务 -给api用的
   rpc GetServiceList(GetServiceListReq) returns(GetServiceListResp);
 
-  //UserLogin 登录
+  //UserLogin 登录 -给api用的
   rpc UserLogin(UserLoginReq)returns(UserLoginResp);
 
-  //UserAuth 验证用户token
+  //UserAuth 验证用户token  -给api用的
   rpc UserAuth(UserAuthReq)returns(UserAuthResp);
 }
